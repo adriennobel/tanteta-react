@@ -76,18 +76,33 @@ html {
 
 /* ----- IMAGE SLIDER COMPONENT ------------------------ */
 /* ----------------------------------------------------- */
+
+.image-slide {
+    display: inline-block;
+}
+
 .image-slides {
+    width: max-content;
+    transform: translateX(0px);
+    transition: all 1s ease;
+}
+
+.image-slider-section {
+    overflow: hidden;
+}
+
+/* .image-slides {
     display: flex;
     overflow: auto;
     scrollbar-width: none;
-    /* hide scrollbar on firefox */
+    /* hide scrollbar on firefox
     scroll-behavior: smooth;
 }
 
 .image-slides::-webkit-scrollbar {
     display: none;
-    /* hide scrollbar on Chrome, Safari, and Opera */
-}
+    /* hide scrollbar on Chrome, Safari, and Opera
+} */
 
 /* ----- SERVICES PPAGE -------------------------------- */
 /* ----------------------------------------------------- */

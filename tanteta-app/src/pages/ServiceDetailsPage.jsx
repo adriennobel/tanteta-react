@@ -1,67 +1,121 @@
 import { useParams, Link } from "react-router-dom";
+import { useState, useEffect } from "react";
 import LinkRoutes from "../assets/LinkRoutes";
 import NotFoundPage from "./NotFoundPage";
 import AllServicesDetails from "../assets/AllServicesDetails";
-import useToggleTrueFalse from "../hooks/ToggleTrueFalseHook";
+import PriceCalcComp from "../components/PriceCalcComp";
 
 const ServiceDetailsPage = () => {
     const { nameId } = useParams();
     const { categoryId } = useParams();
 
-    let checkDetail = AllServicesDetails.find(checkDetail => checkDetail.categoryId === categoryId);
-    if (!checkDetail) {
-        return <NotFoundPage />;
-    }
-
-    let shootingDetail = AllServicesDetails.find(shootingDetail => shootingDetail.nameId === nameId);
+    let shootingDetail = AllServicesDetails.find(shootingDetail =>
+        shootingDetail.nameId === nameId
+        && shootingDetail.categoryId === categoryId
+    );
     if (!shootingDetail) {
         return <NotFoundPage />;
     }
 
-    function nextSlide() {
-        let slides = document.querySelector(".image-slides");
-        slides.scrollBy(200, 0);
+    let [count, setCount] = useState(0);
+    let [width, setWidth] = useState(0);
+    let imgArr = [];
+
+    function initwidth() {
+        imgArr = document.querySelectorAll(".image-slide");
+        // setWidth(imgArr[0].offsetWidth);
+        console.log("init width to: " + width);
     }
+
+    function nextSlide() {
+        imgArr = document.querySelectorAll(".image-slide");
+
+        if (count >= 0 && count < imgArr.length - 1) {
+            width = width + imgArr[count].offsetWidth;
+            setWidth(width);
+
+            document.querySelector(".image-slides").style.transform = `translateX(-${width}px)`;
+
+            count = count + 1;
+            setCount(count);
+        }
+
+        console.log(count);
+        console.log(width);
+        console.log(imgArr[count]);
+    }
+
     function prevSlide() {
-        let slides = document.querySelector(".image-slides");
-        slides.scrollBy(-200, 0);
+        imgArr = document.querySelectorAll(".image-slide");
+
+        if (count > 0) {
+            width = width - imgArr[count - 1].offsetWidth;
+            setWidth(width);
+
+            document.querySelector(".image-slides").style.transform = `translateX(-${width}px)`;
+
+            count = count - 1;
+            setCount(count);
+        }
+
+        console.log(count);
+        console.log(width);
+        console.log(imgArr[count]);
     }
 
     return (
         <div className="service-details-page">
             <h1>Service Detail: {shootingDetail.name}</h1>
 
-            <div className="image-slides">
-                {shootingDetail.images &&
-                    shootingDetail.images.map((image, i) => (
-                        <div key={i} className={`image-slide slide-${i}`} id={`slide-${i}`}>
-                            <img src={image.src} alt={image.alt} width="auto" height="300" />
-                        </div>
-                    ))
-                }
-            </div>
-            <button onClick={prevSlide}>&lt;</button>
-            <button onClick={nextSlide}>&gt;</button>
-
             <div className="bread-crumbs">
                 <p><Link to={'/'}>Home</Link> &gt; <Link to={`/${LinkRoutes.ServicesPage}`}>Services</Link> &gt; <Link to={`/${shootingDetail.categoryId}`}>{shootingDetail.category}</Link> &gt; {shootingDetail.name}</p>
             </div>
 
-            {shootingDetail.pricepacks ?
-                <div className="price-packs">
-                    <h2>Quick Packs</h2>
-                    {
-                        shootingDetail.pricepacks.map((pricepack, i) => (
-                            <div key={i} className="price-pack">
-                                <p>{pricepack.price} <abbr title="Francs CFA">XAF</abbr></p>
-                                <p>{pricepack.desc}</p>
+            <section className="image-slider-section" onLoad={initwidth}>
+                <div className="image-slides">
+                    {shootingDetail.images ?
+                        shootingDetail.images.map((image, i) => (
+                            <div key={i} className={`image-slide slide-${i}`} id={`slide-${i}`}>
+                                <img className="image" src={image.src} alt={image.alt} width="auto" height="300" />
                             </div>
                         ))
+                        :
+                        <div className={`image-slide slide-1`} id={`slide-1`}>
+                            <img src="/Image_Coming_Soon.png" alt="coming soon image placeholder" width="auto" height="300" />
+                        </div>
                     }
                 </div>
-                :
-                <h2>Coming Soon...</h2>
-            }
+                <button onClick={prevSlide}>Prev</button>
+                <button onClick={nextSlide}>Next</button>
+            </section>
+
+            <section className="price-pack-section">
+                <h2>Quick Price Packs</h2>
+                {shootingDetail.pricepacks ?
+                    <div className="price-packs">
+                        {
+                            shootingDetail.pricepacks.map((pricepack, i) => (
+                                <div key={i} className="price-pack">
+                                    <p>{pricepack.price} <abbr title="Francs CFA">XAF</abbr></p>
+                                    <p>{pricepack.desc}</p>
+                                </div>
+                            ))
+                        }
+                    </div>
+                    :
+                    <p>Coming Soon...</p>
+                }
+            </section>
+
+            <section className="price-calculator-section">
+                <h2>Price Calculaator</h2>
+                {shootingDetail.calculator ?
+                    <PriceCalcComp />
+                    :
+                    <p>Contact us for custom prices.</p>
+                }
+            </section>
+
         </div>
     );
 }
