@@ -21,14 +21,12 @@ const ServiceDetailsPage = () => {
     let [width, setWidth] = useState(0);
     let imgArr = [];
 
-    function initwidth() {
-        imgArr = document.querySelectorAll(".image-slide");
-        // setWidth(imgArr[0].offsetWidth);
+    useEffect(() => {
+        imgArr = document.querySelectorAll('.image-slide');
         console.log("init width to: " + width);
-    }
+    });
 
     function nextSlide() {
-        imgArr = document.querySelectorAll(".image-slide");
 
         if (count >= 0 && count < imgArr.length - 1) {
             width = width + imgArr[count].offsetWidth;
@@ -46,7 +44,6 @@ const ServiceDetailsPage = () => {
     }
 
     function prevSlide() {
-        imgArr = document.querySelectorAll(".image-slide");
 
         if (count > 0) {
             width = width - imgArr[count - 1].offsetWidth;
@@ -71,7 +68,7 @@ const ServiceDetailsPage = () => {
                 <p><Link to={'/'}>Home</Link> &gt; <Link to={`/${LinkRoutes.ServicesPage}`}>Services</Link> &gt; <Link to={`/${shootingDetail.categoryId}`}>{shootingDetail.category}</Link> &gt; {shootingDetail.name}</p>
             </div>
 
-            <section className="image-slider-section" onLoad={initwidth}>
+            <section className="image-slider-section">
                 <div className="image-slides">
                     {shootingDetail.images ?
                         shootingDetail.images.map((image, i) => (
