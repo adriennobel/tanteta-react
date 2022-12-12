@@ -55,18 +55,20 @@ const StudioShootingDetails = [
         desc: "Studio shooting for one gentleman",
         category: "Studio Shooting",
         categoryId: "studio-shooting",
-        pricepack1: {
-            price: 5000,
-            pricedesc: "One person, One outfit, 15 mins, Two edited photos",
-        },
-        pricepack2: {
-            price: 10000,
-            pricedesc: "One person, Two outfits, 30 mins, Five edited photos",
-        },
-        pricepack3: {
-            price: 15000,
-            pricedesc: "One person, Three outfits, 45 mins, Eight edited photos",
-        },
+        pricepacks: [
+            {
+                price: 5000,
+                desc: "One person, One outfit, 15 mins, Two edited photos",
+            },
+            {
+                price: 10000,
+                desc: "One person, Two outfits, 30 mins, Five edited photos",
+            },
+            {
+                price: 15000,
+                desc: "One person, Three outfits, 45 mins, Eight edited photos",
+            },
+        ],
     },
     {
         id: "SSC",

@@ -104,9 +104,28 @@ html {
     /* hide scrollbar on Chrome, Safari, and Opera
 } */
 
-/* ----- SERVICES PPAGE -------------------------------- */
+/* ----- SERVICES PAGE --------------------------------- */
 /* ----------------------------------------------------- */
 .service-cards {
     display: flex;
     flex-wrap: wrap;
+}
+
+
+/* ----- CALENDAR COMPONENT ---------------------------- */
+/* ----------------------------------------------------- */
+
+.calendar-body {
+    max-width: 480px;
+}
+
+.weekdays {
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: space-around;
+}
+
+.days {
+    display: grid;
+    grid-template-columns: auto auto auto auto auto auto auto;
 }

@@ -146,7 +146,7 @@ const PriceCalcComp = () => {
                     <legend>Do you need make-up with us?</legend>
 
                     <input type="radio" name="makeup" onChange={handleMakeupState} id="makeup-state" defaultValue="0" />
-                    <label>Yes</label>
+                    <label htmlFor="makeup-state">Yes</label>
                     <input type="radio" name="makeup" onChange={handleMakeupState} defaultChecked />
                     <label>No</label>
                 </fieldset>

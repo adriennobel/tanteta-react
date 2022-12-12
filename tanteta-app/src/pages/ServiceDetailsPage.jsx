@@ -1,9 +1,10 @@
 import { useParams, Link } from "react-router-dom";
 import { useState, useEffect } from "react";
-import LinkRoutes from "../assets/LinkRoutes";
 import NotFoundPage from "./NotFoundPage";
+import LinkRoutes from "../assets/LinkRoutes";
 import AllServicesDetails from "../assets/AllServicesDetails";
 import PriceCalcComp from "../components/PriceCalcComp";
+import CalendarBook from "../components/CalendarBook";
 
 const ServiceDetailsPage = () => {
     const { nameId } = useParams();
@@ -23,7 +24,7 @@ const ServiceDetailsPage = () => {
 
     useEffect(() => {
         imgArr = document.querySelectorAll('.image-slide');
-        console.log("init width to: " + width);
+        // console.log("init width to: " + width);
     });
 
     function nextSlide() {
@@ -111,6 +112,11 @@ const ServiceDetailsPage = () => {
                     :
                     <p>Contact us for custom prices.</p>
                 }
+            </section>
+
+            <section className="calendar-book-section">
+                <h2>Book a time in our Calendar</h2>
+                <CalendarBook />
             </section>
 
         </div>
