@@ -2,24 +2,31 @@ import { useState, useEffect } from "react";
 
 const CalendarBook = () => {
 
+    const today = new Date(); // month object with today's full date and time
+    const todayISO = new Date().getFullYear() + "-" + (new Date().getMonth() + 1) + "-" + new Date().getDate();
+
     // init monthCounter to 1 to get lastDateOfThisMonth. 1 represents this month
     let [monthCounter, setMonthCounter] = useState(1);
-    let [dayOfThisMonth, setDayOfThisMonth] = useState(new Date().getDate());
+    let [selectedDate, setSelectedDate] = useState(todayISO);
+    let [selectedTime, setSelectedTime] = useState('00:00');
+    let [dayObjectWithTimeSlots, setDayObjectWithTimeSlots] = useState([
+        {
+            date: '',
+            timeSlotsAvailable: []
+        }
+    ]);
 
     useEffect(() => {
-
+        const initSelectedDayElement = document.getElementById(selectedDate);
+        initSelectedDayElement ? initSelectedDayElement.checked = true : null;
     });
 
-    const date = new Date(); // month object with today's full date and time
-
     // date object with the full date and time of the last day of this month
-    const lastDateOfThisMonth = new Date(date.getFullYear(), date.getMonth() + monthCounter, 0);
-    const firstDateOfThisMonth = new Date(date.getFullYear(), date.getMonth() + monthCounter - 1, 1);
-    const thisMonthAndYear = lastDateOfThisMonth.toLocaleDateString(undefined, { month: 'long', year: 'numeric' });
+    const lastDateOfThisMonth = new Date(today.getFullYear(), today.getMonth() + monthCounter, 0);
+    const firstDateOfThisMonth = new Date(today.getFullYear(), today.getMonth() + monthCounter - 1, 1);
 
-    const dayID = lastDateOfThisMonth.getFullYear() + "-" + (lastDateOfThisMonth.getMonth() + 1);
-    const today = dayID + "-" + date.getDate();
-    const selectedDate = dayID + "-" + dayOfThisMonth;
+    const thisMonthAndYear = lastDateOfThisMonth.toLocaleDateString(undefined, { month: 'long', year: 'numeric' });
+    const thisMonthAndYearISO = lastDateOfThisMonth.getFullYear() + "-" + (lastDateOfThisMonth.getMonth() + 1);
 
     // array to hold the days of the viewed month. updates automatically as monthCounter changes to show the correct days of each month as the user clicks through months
     let daysOfThisMonth = [];
@@ -38,13 +45,14 @@ const CalendarBook = () => {
         daysOfTheWeek.push(new Date(2020, 2, i).toLocaleDateString(undefined, { weekday: 'short' }));
     }
 
-    // console.log(date);
+    // console.log(selectedDate);
     // ISO 2020-05-10T00:00
     // console.log(date.toLocaleDateString(undefined, { weekday: 'long', day: 'numeric', month: 'short', year: 'numeric' }));
 
     function nextMonth() {
         monthCounter += 1;
         setMonthCounter(monthCounter);
+        iniitCalendar();
         console.log(monthCounter);
     }
 
@@ -52,27 +60,68 @@ const CalendarBook = () => {
         if (monthCounter > 1) {
             monthCounter -= 1;
             setMonthCounter(monthCounter);
+            iniitCalendar();
         }
         console.log(monthCounter);
     }
 
-    function check() {
-
-        const daysOfThisMonthElement = document.querySelectorAll(`.dayin-${dayID}`);
-        for (let i = 0; i < daysOfThisMonthElement.length; i++) {
-            if (daysOfThisMonthElement[i].checked) {
-                dayOfThisMonth = daysOfThisMonthElement[i].value
-                setDayOfThisMonth(dayOfThisMonth);
-            }
+    function iniitCalendar() {
+        const daysOfThisMonthElement = document.querySelectorAll('.days-of-this-month input');
+        for (let element of daysOfThisMonthElement) {
+            element.checked = false;
         }
-        console.log(dayOfThisMonth);
     }
 
-    const dayObjectWithTimeSlots = [{
-        date: '2022-12-12',
-        timeSlots: ['10:00', '10:30', '11:00', '11:30', '12:00', '12:30', '13:00', '13:30', '14:00', '14:30', '15:00', '15:30', '16:00', '16:30', '17:00', '17:30']
+    const selectThisDay = (e) => {
+        selectedDate = e.target.className;
+        setSelectedDate(selectedDate);
+        setSelectedTime('00:00');
+        // console.log(e.target);
+        console.log(e.target.className);
+    }
+
+    const timeSlotsDefault = ['10:00', '10:30', '11:00', '11:30', '12:00', '12:30', '13:00', '13:30', '14:00', '14:30', '15:00', '15:30', '16:00', '16:30', '17:00', '17:30'];
+    dayObjectWithTimeSlots = [{
+        date: '2022-12-19',
+        timeSlotsAvailable: ['10:00', '10:30', '11:00', '11:30', '12:00', '12:30', '13:00', '13:30', '14:00', '14:30', '15:00', '15:30', '16:00', '16:30', '17:00', '17:30']
+    }, {
+        date: '2022-12-20',
+        timeSlotsAvailable: ['10:00', '10:30', '11:00', '11:30', '12:00', '12:30', '13:00', '13:30', '14:00', '14:30', '15:00', '15:30', '16:00', '16:30', '17:00', '17:30']
     }];
     const timesOfThisDay = dayObjectWithTimeSlots.find(dayobjwtime => dayobjwtime.date == selectedDate);
+
+    const selectThisTimeSlot = (e) => {
+        selectedTime = e.target.innerHTML;
+        setSelectedTime(selectedTime);
+
+        let dayIndex = dayObjectWithTimeSlots.findIndex(timeslot => timeslot.date == selectedDate);
+        let timeIndex = dayObjectWithTimeSlots[dayIndex].timeSlotsAvailable.indexOf(selectedTime);
+
+        dayObjectWithTimeSlots[dayIndex].timeSlotsAvailable.splice(timeIndex, 1);
+        setDayObjectWithTimeSlots(dayObjectWithTimeSlots);
+
+        console.log(selectedTime);
+        console.log(dayObjectWithTimeSlots[dayIndex].timeSlotsAvailable);
+    }
+
+    const selectThisNewDayTimeSlot = (e) => {
+        selectedTime = e.target.innerHTML;
+        setSelectedTime(selectedTime);
+
+        let timeIndex = timeSlotsDefault.indexOf(selectedTime);
+        timeSlotsDefault.splice(timeIndex, 1);
+
+        let dayObject = {
+            date: selectedDate,
+            timeSlotsAvailable: timeSlotsDefault
+        }
+
+        dayObjectWithTimeSlots.push(dayObject);
+        setDayObjectWithTimeSlots(dayObjectWithTimeSlots);
+
+        console.log(selectedTime);
+        console.log(dayObjectWithTimeSlots);
+    }
 
     return (
         <div className="calendar-book-component">
@@ -94,7 +143,7 @@ const CalendarBook = () => {
                             ))
                         }
                     </div>
-                    <div className="days">
+                    <div className="days-of-this-month">
                         {
                             emptyDaysOfThisMonth.map(day => (
                                 <span key={day} className="empty-day"></span>
@@ -102,33 +151,37 @@ const CalendarBook = () => {
                         }
                         {
                             daysOfThisMonth.map(day => (
-                                (day < date.getDate() && lastDateOfThisMonth.getMonth() == date.getMonth()) ?
-                                    <span key={day} onClick={check} className="this-day not-available">
-                                        <input type="radio" id={`day-${dayID}-${day}`} value={day} className={`dayin-${dayID}`} name="day_of_the_month" disabled />
-                                        <label htmlFor={`day-${dayID}-${day}`} >{day}</label>
+                                // check days before today to disable them
+                                (day < today.getDate() && lastDateOfThisMonth.getMonth() == today.getMonth()) ?
+                                    <span key={day} className="not-selectable">
+                                        <input type="radio" id={`${thisMonthAndYearISO}-${day}`} value={day} name="day_of_this_month" disabled />
+                                        <label htmlFor={`${thisMonthAndYearISO}-${day}`} className={`${thisMonthAndYearISO}-${day}`} >{day}</label>
                                     </span>
                                     :
-                                    (dayID + "-" + day == today) ?
-                                        (new Date(`${dayID}-${day} EST`).getDay() == 0) ? // Check if the day being mapped is a sunday
-                                            <span key={day} onClick={check} className="this-day today">
-                                                <input type="radio" id={`day-${dayID}-${day}`} value={day} className={`dayin-${dayID}`} name="day_of_the_month" defaultChecked disabled />
-                                                <label htmlFor={`day-${dayID}-${day}`} >{day}</label>
+                                    // check if this day is today
+                                    (thisMonthAndYearISO + "-" + day == todayISO) ?
+                                        (new Date(`${thisMonthAndYearISO}-${day} EST`).getDay() == 0) ?
+                                            // Check if the day being mapped is a sunday
+                                            <span key={day} className="today sunday">
+                                                <input type="radio" id={`${thisMonthAndYearISO}-${day}`} value={day} name="day_of_this_month" disabled defaultChecked />
+                                                <label htmlFor={`${thisMonthAndYearISO}-${day}`} className={`${thisMonthAndYearISO}-${day}`} >{day}</label>
                                             </span>
                                             :
-                                            <span key={day} onClick={check} className="this-day today">
-                                                <input type="radio" id={`day-${dayID}-${day}`} value={day} className={`dayin-${dayID}`} name="day_of_the_month" defaultChecked />
-                                                <label htmlFor={`day-${dayID}-${day}`} >{day}</label>
+                                            <span key={day} className="today">
+                                                <input type="radio" id={`${thisMonthAndYearISO}-${day}`} value={day} name="day_of_this_month" defaultChecked />
+                                                <label onClick={selectThisDay} htmlFor={`${thisMonthAndYearISO}-${day}`} className={`${thisMonthAndYearISO}-${day}`} >{day}</label>
                                             </span>
                                         :
-                                        (new Date(`${dayID}-${day} EST`).getDay() == 0) ? // Check if the day being mapped is a sunday
-                                            <span key={day} onClick={check} className="this-day">
-                                                <input type="radio" id={`day-${dayID}-${day}`} value={day} className={`dayin-${dayID}`} name="day_of_the_month" disabled />
-                                                <label htmlFor={`day-${dayID}-${day}`} >{day}</label>
+                                        (new Date(`${thisMonthAndYearISO}-${day} EST`).getDay() == 0) ?
+                                            // Check if the day being mapped is a sunday
+                                            <span key={day} className="sunday">
+                                                <input type="radio" id={`${thisMonthAndYearISO}-${day}`} value={day} name="day_of_this_month" disabled />
+                                                <label htmlFor={`${thisMonthAndYearISO}-${day}`} className={`${thisMonthAndYearISO}-${day}`} >{day}</label>
                                             </span>
                                             :
-                                            <span key={day} onClick={check} className="this-day">
-                                                <input type="radio" id={`day-${dayID}-${day}`} value={day} className={`dayin-${dayID}`} name="day_of_the_month" />
-                                                <label htmlFor={`day-${dayID}-${day}`} >{day}</label>
+                                            <span key={day} className="selectable">
+                                                <input type="radio" id={`${thisMonthAndYearISO}-${day}`} value={day} name="day_of_this_month" />
+                                                <label onClick={selectThisDay} htmlFor={`${thisMonthAndYearISO}-${day}`} className={`${thisMonthAndYearISO}-${day}`} >{day}</label>
                                             </span>
                             ))
                         }
@@ -137,30 +190,44 @@ const CalendarBook = () => {
 
             </div>
             <div className="timeslots-box">
-                <div className="timeslots-header">
-                    <h4>Pick a time</h4>
-                    <p className="selected-time">00:00</p>
-                </div>
-                <div className="timeslots-body">
-                    {
-                        (timesOfThisDay) ?
-                            <div className="times-of-this-day">
-                                <h5>{timesOfThisDay.date}</h5>
-                                <p>Available timeslots should be displayed heere.</p>
-                                {
-                                    timesOfThisDay.timeSlots.map(time => (
-                                        <div key={time}>{time}</div>
-                                    ))
-                                }
+
+                {
+                    timesOfThisDay ?
+                        <div className="timeslots-box">
+                            <div className="timeslots-header">
+                                <h4>Book a slot for {new Date(`${selectedDate} EST`).toLocaleDateString(undefined, { day: 'numeric', weekday: 'long', month: 'long', year: 'numeric' })}</h4>
+                                <p className="selected-time">{selectedTime}</p>
                             </div>
-                            :
-                            <div className="times-of-this-day nothing">
-                                <p>No Booking this day, default timeslots should be displayed.</p>
-                                <p>When user choses, get that time and create a booking in the server</p>
-                                <p>Next user will see the available timeslots instead of default timeslots.</p>
+                            <div className="timeslots-body">
+                                <div className="times-of-this-day">
+                                    {
+                                        timesOfThisDay.timeSlotsAvailable.map(time => (
+                                            <div key={time} onClick={selectThisTimeSlot} className="timeslot">{time}</div>
+                                        ))
+                                    }
+                                </div>
                             </div>
-                    }
-                </div>
+                        </div>
+                        :
+                        <div className="timeslots-box">
+                            <div className="timeslots-header">
+                                <h4>Book a slot for {new Date(`${selectedDate} EST`).toLocaleDateString(undefined, { day: 'numeric', weekday: 'long', month: 'long', year: 'numeric' })}</h4>
+                                <p className="selected-time">{selectedTime}</p>
+                                <p>No Booking this day, default timeslots should be displayed.
+                                    <br />When user choses, get that time and create a booking in the server
+                                    <br />Next user will see the available timeslots instead of default timeslots.</p>
+                            </div>
+                            <div className="timeslots-body">
+                                <div className="times-of-this-day nothing">
+                                    {
+                                        timeSlotsDefault.map(time => (
+                                            <div key={time} onClick={selectThisNewDayTimeSlot} className="timeslot">{time}</div>
+                                        ))
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                }
             </div>
         </div>
     );

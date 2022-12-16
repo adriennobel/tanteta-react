@@ -125,7 +125,7 @@ html {
     justify-content: space-around;
 }
 
-.days {
+.days-of-this-month {
     display: grid;
     grid-template-columns: auto auto auto auto auto auto auto;
 }
