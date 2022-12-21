@@ -4,7 +4,7 @@ import NotFoundPage from "./NotFoundPage";
 import LinkRoutes from "../assets/LinkRoutes";
 import AllServicesDetails from "../assets/AllServicesDetails";
 import PriceCalcComp from "../components/PriceCalcComp";
-import CalendarBook from "../components/CalendarBook";
+import CalendarBookComp from "../components/CalendarBookComp";
 
 const ServiceDetailsPage = () => {
     const { nameId } = useParams();
@@ -106,7 +106,7 @@ const ServiceDetailsPage = () => {
             </section>
 
             <section className="price-calculator-section">
-                <h2>Price Calculaator</h2>
+                <h2>Price Calculator</h2>
                 {shootingDetail.calculator ?
                     <PriceCalcComp />
                     :
@@ -116,7 +116,7 @@ const ServiceDetailsPage = () => {
 
             <section className="calendar-book-section">
                 <h2>Book a time in our Calendar</h2>
-                <CalendarBook />
+                <CalendarBookComp />
             </section>
 
         </div>

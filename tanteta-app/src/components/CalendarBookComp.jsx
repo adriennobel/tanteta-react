@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
+import axios from "axios";
 
-const CalendarBook = () => {
+const CalendarBookComp = () => {
 
     const today = new Date(); // month object with today's full date and time
     const todayISO = new Date().getFullYear() + "-" + (new Date().getMonth() + 1) + "-" + new Date().getDate();
@@ -17,9 +18,17 @@ const CalendarBook = () => {
     ]);
 
     useEffect(() => {
+        const loadDayObject = async () => {
+            const response = await axios.get('http://localhost:8000/api/days');
+            console.log(response);
+            dayObjectWithTimeSlots.push(response.data);
+            setDayObjectWithTimeSlots(dayObjectWithTimeSlots);
+        }
+        loadDayObject();
+        // prevents default behavior when browsing through months
         const initSelectedDayElement = document.getElementById(selectedDate);
         initSelectedDayElement ? initSelectedDayElement.checked = true : null;
-    });
+    }, []);
 
     // date object with the full date and time of the last day of this month
     const lastDateOfThisMonth = new Date(today.getFullYear(), today.getMonth() + monthCounter, 0);
@@ -81,13 +90,13 @@ const CalendarBook = () => {
     }
 
     const timeSlotsDefault = ['10:00', '10:30', '11:00', '11:30', '12:00', '12:30', '13:00', '13:30', '14:00', '14:30', '15:00', '15:30', '16:00', '16:30', '17:00', '17:30'];
-    dayObjectWithTimeSlots = [{
-        date: '2022-12-19',
-        timeSlotsAvailable: ['10:00', '10:30', '11:00', '11:30', '12:00', '12:30', '13:00', '13:30', '14:00', '14:30', '15:00', '15:30', '16:00', '16:30', '17:00', '17:30']
-    }, {
-        date: '2022-12-20',
-        timeSlotsAvailable: ['10:00', '10:30', '11:00', '11:30', '12:00', '12:30', '13:00', '13:30', '14:00', '14:30', '15:00', '15:30', '16:00', '16:30', '17:00', '17:30']
-    }];
+    // dayObjectWithTimeSlots = [{
+    //     date: '2022-12-19',
+    //     timeSlotsAvailable: ['10:00', '10:30', '11:00', '11:30', '12:00', '12:30', '13:00', '13:30', '14:00', '14:30', '15:00', '15:30', '16:00', '16:30', '17:00', '17:30']
+    // }, {
+    //     date: '2022-12-20',
+    //     timeSlotsAvailable: ['10:00', '10:30', '11:00', '11:30', '12:00', '12:30', '13:00', '13:30', '14:00', '14:30', '15:00', '15:30', '16:00', '16:30', '17:00', '17:30']
+    // }];
     const timesOfThisDay = dayObjectWithTimeSlots.find(dayobjwtime => dayobjwtime.date == selectedDate);
 
     const selectThisTimeSlot = (e) => {
@@ -233,4 +242,4 @@ const CalendarBook = () => {
     );
 }
 
-export default CalendarBook;
+export default CalendarBookComp;
