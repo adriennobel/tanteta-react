@@ -1,9 +1,12 @@
 import express from 'express';
 import { MongoClient } from 'mongodb';
+import dotenv from 'dotenv';
 import cors from 'cors';
 /* GETS RID OF BELOW ERROR 
 Access to XMLHttpRequest at 'http://localhost:8000/api/days' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource.
 */
+
+dotenv.config();
 
 const app = express();
 
@@ -11,7 +14,7 @@ app.use(express.json());
 app.use(cors());
 
 app.get('/api/days', async (req, res) => {
-    const uri = "mongodb+srv://adriennobel:December2020@tanteta-first.ivq6y1u.mongodb.net/?retryWrites=true&w=majority"
+    const uri = `mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@tanteta-first.ivq6y1u.mongodb.net/?retryWrites=true&w=majority`;
 
     const client = new MongoClient(uri);
 
