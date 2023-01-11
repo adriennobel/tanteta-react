@@ -1,8 +1,9 @@
 import { useParams, Link } from "react-router-dom";
-import { useState, useEffect } from "react";
 import NotFoundPage from "./NotFoundPage";
 import LinkRoutes from "../assets/LinkRoutes";
 import AllServicesDetails from "../assets/AllServicesDetails";
+import HeroComp from "../components/HeroComp";
+import ImageSliderComp from "../components/ImageSliderComp";
 import PriceCalcComp from "../components/PriceCalcComp";
 import CalendarBookComp from "../components/CalendarBookComp";
 
@@ -18,73 +19,18 @@ const ServiceDetailsPage = () => {
         return <NotFoundPage />;
     }
 
-    let [count, setCount] = useState(0);
-    let [width, setWidth] = useState(0);
-    let imgArr = [];
-
-    useEffect(() => {
-        imgArr = document.querySelectorAll('.image-slide');
-        // console.log("init width to: " + width);
-    });
-
-    function nextSlide() {
-
-        if (count >= 0 && count < imgArr.length - 1) {
-            width = width + imgArr[count].offsetWidth;
-            setWidth(width);
-
-            document.querySelector(".image-slides").style.transform = `translateX(-${width}px)`;
-
-            count = count + 1;
-            setCount(count);
-        }
-
-        console.log(count);
-        console.log(width);
-        console.log(imgArr[count]);
-    }
-
-    function prevSlide() {
-
-        if (count > 0) {
-            width = width - imgArr[count - 1].offsetWidth;
-            setWidth(width);
-
-            document.querySelector(".image-slides").style.transform = `translateX(-${width}px)`;
-
-            count = count - 1;
-            setCount(count);
-        }
-
-        console.log(count);
-        console.log(width);
-        console.log(imgArr[count]);
-    }
-
     return (
         <div className="service-details-page">
-            <h1>Service Detail: {shootingDetail.name}</h1>
+            <section className="hero-section">
+                <HeroComp headline={`Service Detail: ${shootingDetail.name}`} />
+            </section>
 
             <div className="bread-crumbs">
                 <p><Link to={'/'}>Home</Link> &gt; <Link to={`/${LinkRoutes.ServicesPage}`}>Services</Link> &gt; <Link to={`/${shootingDetail.categoryId}`}>{shootingDetail.category}</Link> &gt; {shootingDetail.name}</p>
             </div>
 
             <section className="image-slider-section">
-                <div className="image-slides">
-                    {shootingDetail.images ?
-                        shootingDetail.images.map((image, i) => (
-                            <div key={i} className={`image-slide slide-${i}`} id={`slide-${i}`}>
-                                <img className="image" src={image.src} alt={image.alt} width="auto" height="300" />
-                            </div>
-                        ))
-                        :
-                        <div className={`image-slide slide-1`} id={`slide-1`}>
-                            <img src="/Image_Coming_Soon.png" alt="coming soon image placeholder" width="auto" height="300" />
-                        </div>
-                    }
-                </div>
-                <button onClick={prevSlide}>Prev</button>
-                <button onClick={nextSlide}>Next</button>
+                <ImageSliderComp shootingDetail={shootingDetail} />
             </section>
 
             <section className="price-pack-section">

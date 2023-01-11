@@ -1,7 +1,11 @@
+import HeroComp from "../components/HeroComp";
+
 const ContactPage = () => {
     return (
         <div className="contact-page">
-            <h1>Contact Page</h1>
+            <section className="hero-section">
+                <HeroComp headline={`Contact Page`} />
+            </section>
             <p>Components here</p>
         </div>
     );

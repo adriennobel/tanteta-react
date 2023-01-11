@@ -1,0 +1,25 @@
+/* ----- CALENDAR COMPONENT ---------------------------- */
+/* ----------------------------------------------------- */
+
+.calendar-body {
+    max-width: 480px;
+}
+
+.weekdays {
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: space-around;
+}
+
+.days-of-this-month {
+    display: grid;
+    grid-template-columns: auto auto auto auto auto auto auto;
+}
+
+.timeslot-btn.hidden {
+    display: none;
+}
+
+.timeslot-btn.visible {
+    display: block;
+}

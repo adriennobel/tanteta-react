@@ -1,0 +1,45 @@
+/* ----- IMAGE SLIDER COMPONENT ------------------------ */
+/* ----------------------------------------------------- */
+
+.image-slider-component {
+    overflow: hidden;
+}
+
+.image-slides-box {
+    background-color: #f8f8f8;
+    background-color: red;
+    /* display: table; */
+}
+
+.image-slides {
+    display: flex;
+    width: max-content;
+    transform: translateX(0px);
+    -webkit-transition: all 1s ease;
+    -moz-transition: all 1s ease;
+    -ms-transition: all 1s ease;
+    -o-transition: all 1s ease;
+    transition: all 1s ease !important;
+    /* display: table-row; */
+    scroll-behavior: smooth;
+}
+
+.image-slide {
+    /* display: table-cell; */
+}
+
+.image-slide img {
+    display: block;
+    /* height: 400px; */
+}
+
+
+/* .image-slides {
+    /* hide scrollbar on firefox
+    scroll-behavior: smooth;
+}
+
+.image-slides::-webkit-scrollbar {
+    display: none;
+    /* hide scrollbar on Chrome, Safari, and Opera
+} */

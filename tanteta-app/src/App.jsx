@@ -8,7 +8,7 @@ import ServiceCategoryPage from './pages/ServiceCategoryPage';
 import ServiceDetailsPage from './pages/ServiceDetailsPage';
 import NotFoundPage from './pages/NotFoundPage';
 import LinkRoutes from './assets/LinkRoutes';
-import NavBar from './components/NavBar';
+import NavBarComp from './components/NavBarComp';
 
 function App() {
 
@@ -16,7 +16,7 @@ function App() {
     <BrowserRouter>
       <div className="App">
         <header className="page-header">
-          <NavBar />
+          <NavBarComp />
         </header>
         <main className="page-content">
           <Routes>

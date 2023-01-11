@@ -14,118 +14,37 @@ html {
     flex: 1;
 }
 
-/* ----- NAVBAR COMPONENT ------------------------------ */
-/* ----------------------------------------------------- */
-.navigation-box .prim-nav {
-    display: flex;
-    gap: 1rem;
-    list-style-type: none;
-    padding: 0;
-    justify-content: center;
-}
 
-.header-box {
-    display: flex;
-    align-items: center;
-}
-
-.navigation-box {
-    flex: 1;
-}
-
-.sec-nav-shade.visible {
+.page-header {
+    position: fixed;
     width: 100%;
-    height: 100%;
-    /* background: red; */
-    position: absolute;
-    top: 0;
-    left: 0;
-    z-index: 1;
+    z-index: 999;
 }
-
-.sec-nav {
-    position: absolute;
-    visibility: hidden;
-    opacity: 0;
-    padding: 0;
-    list-style-type: none;
-    -webkit-transition: all .5s ease;
-    -moz-transition: all .5s ease;
-    -ms-transition: all .5s ease;
-    -o-transition: all .5s ease;
-    transition: all .5s ease !important;
-}
-
-.sec-nav.visible {
-    z-index: 2;
-    visibility: visible;
-    opacity: 1;
-}
-
-.sec-nav-toggler {
-    -webkit-transition: all .5s ease;
-    -moz-transition: all .5s ease;
-    -ms-transition: all .5s ease;
-    -o-transition: all .5s ease;
-    transition: all .5s ease !important;
-}
-
-.sec-nav-toggler.visible {
-    transform: rotate(90deg);
-}
-
-/* ----- IMAGE SLIDER COMPONENT ------------------------ */
-/* ----------------------------------------------------- */
-
-.image-slide {
-    display: inline-block;
-}
-
-.image-slides {
-    width: max-content;
-    transform: translateX(0px);
-    transition: all 1s ease;
-}
-
-.image-slider-section {
-    overflow: hidden;
-}
-
-/* .image-slides {
-    display: flex;
-    overflow: auto;
-    scrollbar-width: none;
-    /* hide scrollbar on firefox
-    scroll-behavior: smooth;
-}
-
-.image-slides::-webkit-scrollbar {
-    display: none;
-    /* hide scrollbar on Chrome, Safari, and Opera
-} */
 
 /* ----- SERVICES PAGE --------------------------------- */
 /* ----------------------------------------------------- */
+
 .service-cards {
     display: flex;
     flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.service-card-component {
+    background-color: #f8f8f8;
+    border-radius: 5px;
+    padding: 1rem;
 }
 
 
-/* ----- CALENDAR COMPONENT ---------------------------- */
+/* ----- SERVICES DETAILS PAGE --------------------------------- */
 /* ----------------------------------------------------- */
 
-.calendar-body {
-    max-width: 480px;
-}
-
-.weekdays {
+.hero-section {
+    background-color: #000;
+    color: white;
+    height: 25rem;
     display: flex;
-    flex-wrap: nowrap;
-    justify-content: space-around;
-}
-
-.days-of-this-month {
-    display: grid;
-    grid-template-columns: auto auto auto auto auto auto auto;
+    justify-content: center;
+    align-items: center;
 }

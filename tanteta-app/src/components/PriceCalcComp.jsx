@@ -1,3 +1,4 @@
+import '../styles/PriceCalcStyles.css'
 import { useState, useEffect } from "react";
 import AllServicesDetails from "../assets/AllServicesDetails";
 
