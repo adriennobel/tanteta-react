@@ -3,6 +3,7 @@ import ServiceCardFilterComp from "../components/ServiceCardFilterComp";
 import LinkRoutes from "../assets/LinkRoutes";
 import NotFoundPage from "./NotFoundPage";
 import AllServicesDetails from "../assets/AllServicesDetails";
+import HeroComp from "../components/HeroComp";
 
 const ServiceCategoryPage = () => {
     const { categoryId } = useParams();
@@ -14,8 +15,13 @@ const ServiceCategoryPage = () => {
 
     return (
         <div className="service-categorys-page">
-            <h1>Service Category: {shootingDetail.category}</h1>
-            <p><Link to={'/'}>Home</Link> &gt; <Link to={`/${LinkRoutes.ServicesPage}`}>Services</Link> &gt; {shootingDetail.category}</p>
+            <section className="hero-section">
+                <HeroComp headline={`Service Category: ${shootingDetail.category}`} />
+            </section>
+
+            <div className="bread-crumbs">
+                <p><Link to={'/'}>Home</Link> &gt; <Link to={`/${LinkRoutes.ServicesPage}`}>Services</Link> &gt; {shootingDetail.category}</p>
+            </div>
             <p>Components here</p>
 
             <ServiceCardFilterComp serviceDetails={AllServicesDetails} slug={categoryId} />
